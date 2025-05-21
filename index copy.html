@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="UniPhy: Learning a Unified Constitutive Model for Inverse Physics Simulation">
+  <meta name="keywords" content="Neural Constitutive Laws, Differentiable Physics, Material Point Method">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UniPhy: Learning a Unified Constitutive Model for Inverse Physics Simulation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+   <script src="select.js"></script>
+
+  <style>
+        .cropped-video {
+            width: 100%; /* Desired crop width */
+            height: 125px; /* Desired crop height */
+            overflow: hidden; /* Hides the parts outside the defined width and height */
+            position: relative;
+        }
+
+        .cropped-video video {
+            width: 100%; /* Adjust video width to match the container */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Crop the video to fill the container */
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">UniPhy: Learning a Unified Constitutive Model for Inverse Physics Simulation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://keunhong.com/">Himangi Mittal</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://utkarshsinha.com/">Peiye Zhuang</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://jonbarron.info/">Hsin-Ying Lee</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://sofienbouaziz.com/">Shubham Tulsiani</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
+            <span class="author-block"><sup>2</sup>Snap Research</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><b>CVPR 2025</b></span>
+          </div>
+
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2011.12948" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-pdf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z"></path></svg><!-- <i class="fas fa-file-pdf"></i> Font Awesome fontawesome.com -->
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/nerfies" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github"></i> Font Awesome fontawesome.com -->
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cropped-image {
+    width: auto; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+    clip-path: inset(0px 0px 200px 40px); /* top right bottom left */
+  }
+</style>
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="main_figure_draft.png" alt="Teaser figure." width=30% height=30%>
+      <video class="rounded" id="replay-video"
+                 controls
+                 autoplay
+                 loop
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="static/images/teaser.mp4"
+                    type="video/mp4">
+          </video>
+      <div class="content has-text-justified">
+      <p>
+        <b>UniPhy</b> is a unified latent-conditioned neural model which learns a common latent space to encode the properties of diverse materials. At inference, given motion observations for a system with unknown material parameters, UniPhy allows material inference via differentiable simulation-based latent optimization.
+      </p>
+    </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section" style="margin: 0; padding: 0;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div class="content has-text-justified">
+          <!-- <img src="main_figure_draft.png" alt="Teaser figure." width=30% height=30%> -->
+<!--          <img src="TeaserGIF-cropped2.gif" alt="Teaser figure." width=100% height=100%>-->
+<!--          <img src="teaser_webpage_cropped.gif" alt="Teaser figure." width=100% height=100%>-->
+<!--          <img src="teaser_webpage_cropped_2.gif" alt="Teaser figure." width=100% height=100%>-->
+          <img src="grid_animation.gif" alt="Teaser figure." width=100% height=100%>
+          <img src="TeaserGIF3_2.gif" alt="Teaser figure." width=100% height=100%>
+          <!-- <img src="Teaser_GIF_gridanimation.gif" alt="Teaser figure." width=100% height=100%> -->
+          <p>
+        <b>UniPhy</b> is a unified latent-conditioned neural model which learns a common latent space to encode the properties of diverse materials. At inference, given motion observations for a system with unknown material parameters, UniPhy allows material inference via differentiable simulation-based latent optimization.
+      </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="margin: 0; padding: 0;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose <b>UniPhy</b>, a common latent-conditioned neural constitutive model that can encode the physical properties of diverse materials. At inference UniPhy allows `inverse simulation' i.e. inferring material properties by  optimizing the scene-specific latent to match the available observations via differentiable simulation. In contrast to existing methods that treat such inference as system identification, UniPhy does not rely on user-specified material information. Compared to prior neural constitutive modeling approaches which learn scene specific networks, the shared training across materials improves both, robustness and accuracy of the estimates. We train UniPhy using simulated trajectories across diverse geometries and materials -- elastic, plasticine, sand, and fluids (Newtonian & non-Newtonian). At inference, given an object with unknown material properties, UniPhy can infer the material properties via latent optimization to match the motion observations, and can then allow re-simulating the object under diverse scenarios. We compare UniPhy against prior inverse simulation methods, and show that the inference from UniPhy enables more accurate replay and re-simulation under novel conditions.
+          </div>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="columns is-centered has-text-centered">
+  <h2 style="padding: 10px; display: inline-block;" class="title is-3">Method</h2>
+</div>
+<section class="section">
+    <div class="container is-widescreen">
+    <div class="columns is-centered">
+<!--      <img src="method_gif.gif" alt="Train Figure" width=70% height=70%>-->
+      <video id="method_video" autoplay controls muted loop playsinline style="width: 1200px; height: 600px;">
+<!--        <source src="method_gif2.mov" type="video/mp4">-->
+<!--        <source src="method_gif5.mov" type="video/mp4">-->
+        <source src="method_gif3.mov" type="video/mp4">
+<!--        <source src="method_gif.mov" type="video/mp4">-->
+      </video>
+    </div>
+    <center>
+      <div class="column is-four-fifths">
+      <div class="content has-text-justified">
+      <p>
+        Material Point Method (MPM) is a hybrid Euler-Lagrangian method for particle-based simulation. MPM requires the material type and parameter information beforehand to compute
+        the deformation gradient projection and stress via hand-designed analytical model. Additionally, each material has its own analytical model. We propose a unified, neural model <b>UniPhy</b>,
+        that can learn representations across diverse materials without the need for human-in-the-loop to define material information beforehand.
+        We achieve this by learning neural representations of materials through a latent space.
+      </p>
+      </div>
+      </div>
+    </center>
+    </div>
+</section>
+
+<!--<section class="section">-->
+<!--    <div class="container is-widescreen">-->
+<!--    <div class="columns is-centered">-->
+<!--      <img src="model_diagram_inference_camera_ready.png" alt="Train Figure" width=70% height=70%>-->
+<!--    </div>-->
+<!--    <center>-->
+<!--      <p>-->
+<!--        TODO: write text-->
+<!--      </p>-->
+<!--    </center>-->
+<!--    </div>-->
+<!--</section>-->
+
+<!--<section class="hero is-light is-small">-->
+<!--  <div class="hero-body">-->
+<!--    <div class="container">-->
+<!--      <div id="results-carousel" class="carousel results-carousel">-->
+<!--        <div class="item item-steve">-->
+<!--          <video poster="" id="steve" autoplay controls muted loop playsinline height="20%">-->
+<!--            <source src="elastic_optimizedlatent.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-chair-tp">-->
+<!--          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="20%">-->
+<!--            <source src="elastic_randomlatent.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-shiba">-->
+<!--          <video poster="" id="shiba" autoplay controls muted loop playsinline height="20%">-->
+<!--            <source src="./static/videos/shiba.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-fullbody">-->
+<!--          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="20%">-->
+<!--            <source src="./static/videos/fullbody.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-blueshirt">-->
+<!--          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">-->
+<!--            <source src="./static/videos/blueshirt.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-mask">-->
+<!--          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">-->
+<!--            <source src="./static/videos/mask.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-coffee">-->
+<!--          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">-->
+<!--            <source src="./static/videos/coffee.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-toby">-->
+<!--          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">-->
+<!--            <source src="./static/videos/toby2.mp4"-->
+<!--                    type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+
+<style>
+  .horizontal-list {
+    display: flex;
+    gap: 80px; /* Spacing between items */
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+  }
+  .horizontal-list li {
+    white-space: nowrap; /* Prevent text from wrapping */
+  }
+</style>
+
+<!-- <div class="columns is-centered has-text-centered">
+  <h2 class="title is-3">Optimized Latent vs Random Latent</h2>
+</div>
+<section class="section">
+    <div class="container is-widescreen">
+    <div class="columns is-centered">
+        <center>
+        <ul class="horizontal-list" id="materiallatent" style="width: 60%">
+          <li role="presentation" class="active"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(0);">Elastic</a>
+          </li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(1);">Newtonian Fluid</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(2);">Plasticine</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(3);">Sand</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(4);">non-Newtonian Fluid</a></li>
+      </ul>
+        <br>
+        </center>
+</div>
+</div>   
+    <div class="container is-widescreen">
+        <div class="columns is-centered">
+
+            <div class="column">
+              <div class="content" align="center">
+                <video id="randomlatent" autoplay controls muted loop playsinline height="100%">
+                  <source src="elastic_randomlatent.mp4"
+                          type="video/mp4" align="center">
+                </video>
+              </div>
+              <h2 class="title is-5" align="center">Random Latent</h2>
+            </div>
+
+            <div class="column">
+              <div class="columns is-centered">
+                <div class="column content" align="center">
+                  <video id="optimizedlatent" autoplay controls muted loop playsinline height="100%">
+                    <source src="elastic_optimizedlatent.mp4"
+                            type="video/mp4">
+                  </video>
+                </div>
+              </div>
+              <h2 class="title is-5" align="center">Optimized Latent</h2>
+            </div>
+
+            <div class="column">
+              <div class="columns is-centered">
+                <div class="column content" align="center">
+                  <video id="groundtruthlatent" autoplay controls muted loop playsinline height="100%">
+                    <source src="elastic_gt.mp4"
+                            type="video/mp4">
+                  </video>
+                </div>
+              </div>
+              <h2 class="title is-5" align="center">Ground-truth</h2>
+            </div>
+
+    </div>
+    </div>
+</section> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="col-md-11 col-md-offset-1 " id="relighting_results">
+        <h2 class="title is-3">Material inference and resimulation</h2>
+        <hr>
+        <div class="content has-text-justified">
+      <p>
+        Given a trajectory observation, we optimize the latent which encodes the material properties of the object in the scene. Using this optimized latent, we can resimulate it under new configurations.
+        Click on the different material types to check out more examples.
+      </p>
+      </div>
+        <center>
+<!--        <h4>-->
+<!--            Geometry-->
+<!--          </h4>-->
+<!--        <ul class="horizontal-list" id="geometry" style="width: 60%">-->
+<!--          <li role="presentation" class="active"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(0);">Geometry 1</a>-->
+<!--          </li>-->
+<!--          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(1);">Geometry 2</a></li>-->
+<!--      </ul>-->
+
+<!--          <h4>-->
+<!--            Material-->
+<!--          </h4>-->
+        <ul class="horizontal-list" id="materiallatent" style="width: 60%">
+          <li role="presentation" class="active"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(0);">Elastic</a>
+          </li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(1);">Newtonian Fluid</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(2);">Plasticine</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(3);">Sand</a></li>
+          <li role="presentation"><a href="javascript: void(0);" onclick="ChangeMaterialLatent(4);">non-Newtonian Fluid</a></li>
+      </ul>
+        <br>
+        </center>
+
+        <div class="container is-widescreen">
+        <div class="columns is-centered">
+
+          <div class="column">
+              <div class="columns is-centered">
+                <div class="column content" align="center">
+                  <video id="groundtruthlatent" autoplay muted loop playsinline height="100%">
+                    <source src="elastic_gt.mp4"
+                            type="video/mp4">
+                  </video>
+                </div>
+              </div>
+<!--              <h2 class="title is-5" align="center">Observation</h2>-->
+            </div>
+
+            <div class="column">
+              <div class="columns is-centered">
+                <div class="column content" align="center">
+                  <video id="optimizedlatent" autoplay muted loop playsinline height="100%">
+                    <source src="elastic_optimizedlatent.mp4"
+                            type="video/mp4">
+                  </video>
+                </div>
+              </div>
+<!--              <h2 class="title is-5" align="center">Replay with Optimized Latent</h2>-->
+            </div>
+
+            <div class="column">
+              <div class="content" align="center">
+                <video id="resimulation" autoplay muted loop playsinline height="100%">
+                  <source src="elastic_resimulation.mp4"
+                          type="video/mp4" align="center">
+                </video>
+
+<!--                <script>-->
+
+<!--                const video11 = document.getElementById('groundtruthlatent');-->
+<!--                const delay = 400; // in milliseconds-->
+
+<!--                video11.removeAttribute('loop');-->
+
+<!--                video11.addEventListener('ended', () => {-->
+<!--                  setTimeout(() => {-->
+<!--                    video11.play();-->
+<!--                  }, delay);-->
+<!--                });-->
+
+<!--                const video12 = document.getElementById('optimizedlatent');-->
+
+<!--                video12.removeAttribute('loop');-->
+
+<!--                video12.addEventListener('ended', () => {-->
+<!--                  setTimeout(() => {-->
+<!--                    video12.play();-->
+<!--                  }, delay);-->
+<!--                });-->
+
+<!--                const video13 = document.getElementById('resimulation');-->
+
+<!--                video13.removeAttribute('loop');-->
+
+<!--                video13.addEventListener('ended', () => {-->
+<!--                  setTimeout(() => {-->
+<!--                    video13.play();-->
+<!--                  }, delay);-->
+<!--                });-->
+<!--              </script>-->
+
+              </div>
+<!--              <h2 class="title is-5" align="center">New simulation using Optimized Latent</h2>-->
+            </div>
+
+
+    </div>
+    </div>
+
+    <div class="container is-widescreen">
+    <div class="columns is-centered">
+      <div class="column">
+          <div class="columns is-centered">
+            <div class="column content" align="center">
+              <video id="groundtruthlatent2" autoplay muted loop playsinline height="100%">
+                <source src="elastic_gt2.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+          </div>
+<!--          <h2 class="title is-5" align="center">Observation</h2>-->
+        </div>
+
+        <div class="column">
+          <div class="columns is-centered">
+            <div class="column content" align="center">
+              <video id="optimizedlatent2" autoplay muted loop playsinline height="100%">
+                <source src="elastic_optimizedlatent2.mp4"
+                        type="video/mp4">
+
+
+
+              </video>
+            </div>
+          </div>
+<!--          <h2 class="title is-5" align="center">Replay with Optimized Latent</h2>-->
+        </div>
+
+        <div class="column">
+          <div class="content" align="center">
+            <video id="resimulation2" autoplay muted loop playsinline height="100%">
+              <source src="elastic_resimulation2.mp4"
+                      type="video/mp4" align="center">
+            </video>
+          </div>
+<!--          <h2 class="title is-5" align="center">New simulation using Optimized Latent</h2>-->
+        </div>
+    </div>
+    </div>
+
+
+    <div class="container is-widescreen">
+    <div class="columns is-centered">
+      <div class="column">
+          <div class="columns is-centered">
+            <div class="column content" align="center">
+              <video id="groundtruthlatent3" autoplay loop muted playsinline height="100%">
+                <source src="elastic_gt3.mp4"
+                        type="video/mp4">
+
+                <script>
+
+              </script>
+
+              </video>
+            </div>
+          </div>
+          <h2 class="title is-5" align="center">Observation</h2>
+        </div>
+
+        <div class="column">
+          <div class="columns is-centered">
+            <div class="column content" align="center">
+              <video id="optimizedlatent3" autoplay muted loop playsinline height="100%">
+                <source src="elastic_optimizedlatent3.mp4"
+                        type="video/mp4">
+
+                <script>
+
+              </script>
+
+              </video>
+            </div>
+          </div>
+          <h2 class="title is-5" align="center">Replay with Optimized Latent</h2>
+        </div>
+
+        <div class="column">
+          <div class="content" align="center">
+            <video id="resimulation3" autoplay muted loop playsinline height="100%">
+              <source src="elastic_resimulation3.mp4"
+                      type="video/mp4" align="center">
+            </video>
+          </div>
+          <h2 class="title is-5" align="center">New simulation</h2>
+        </div>
+    </div>
+    </div>
+
+    </div>
+  </div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="col-md-11 col-md-offset-1 " id="relighting_results">
+        <h2 class="title is-3">Interpolating Latent</h2>
+        <hr>
+
+        <div class="content has-text-justified">
+          <p>
+            We interpolate the latent codes among different material types. Use the sliders below to interpolate between the material.
+          </p>
+        </div>
+
+        <div class="container" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+          <!-- First Column of Row 1 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 400px;">
+            <video id="interpolation-video1" autoplay controls muted loop playsinline style="width: 500px; height: 250px;">
+              <source src="elastic_latent_19.mp4" type="video/mp4" align="center">
+            </video>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px;">
+              <span>Elastic</span>
+              <input id="interpolation-slider1" type="range" value="0" min="0" max="9" step="1" style="flex-grow: 1; margin: 0 10px;">
+              <span>Newtonian</span>
+            </div>
+          </div>
+
+          <!-- Second Column of Row 1 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 400px;">
+            <video id="interpolation-video2" autoplay controls muted loop playsinline style="width: 500px; height: 250px;">
+              <source src="sand_latent_805.mp4" type="video/mp4" align="center">
+            </video>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px;">
+              <span>Sand</span>
+              <input id="interpolation-slider2" type="range" value="0" min="0" max="9" step="1" style="flex-grow: 1; margin: 0 10px;">
+              <span>Plasticine</span>
+            </div>
+          </div>
+
+          <!-- First Column of Row 2 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 400px;">
+            <video id="interpolation-video3" autoplay controls muted loop playsinline style="width: 500px; height: 250px;">
+              <source src="plasticine_latent_634_2.mp4" type="video/mp4" align="center">
+            </video>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px;">
+              <span>Plasticine</span>
+              <input id="interpolation-slider3" type="range" value="0" min="0" max="9" step="1" style="flex-grow: 1; margin: 0 10px;">
+              <span>non-Newtonian</span>
+            </div>
+          </div>
+
+          <!-- Second Column of Row 2 -->
+          <div style="display: flex; flex-direction: column; align-items: center; width: 400px;">
+            <video id="interpolation-video4" autoplay controls muted loop playsinline style="width: 500px; height: 250px;">
+              <source src="newtonian_latent_349_2.mp4" type="video/mp4" align="center">
+            </video>
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px;">
+              <span>Newtonian</span>
+              <input id="interpolation-slider4" type="range" value="0" min="0" max="9" step="1" style="flex-grow: 1; margin: 0 10px;">
+              <span>non-Newtonian</span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    </div>
+</section>
+
+<script>
+
+  const range = document.getElementById('interpolation-slider1');
+  const videoDisplay = document.getElementById('interpolation-video1');
+  const videoSources = ['elastic_latent_19.mp4', 'elastic_latent_0.mp4', 'elastic_latent_3.mp4', 'elastic_latent_24.mp4', 'elastic_latent_56.mp4',
+  'newtonian_latent_227_purple.mp4', 'newtonian_latent_247_purple.mp4', 'newtonian_latent_201_purple.mp4', 'newtonian_latent_265_purple.mp4', 'newtonian_latent_349_purple.mp4'];
+
+  range.addEventListener('input', (e) => {
+    let rangeValue = e.target.value;
+    videoDisplay.querySelector('source').src = videoSources[rangeValue]; // Update the video source
+    videoDisplay.load();
+  });
+
+  const range2 = document.getElementById('interpolation-slider2');
+  const videoDisplay2 = document.getElementById('interpolation-video2');
+  // const videoSources2 = ['plasticine_latent_634.mp4','plasticine_latent_654.mp4', 'plasticine_latent_751.mp4', 'plasticine_latent_602.mp4',  'plasticine_latent_652.mp4',
+  // 'sand_latent_805.mp4', 'sand_latent_841.mp4', 'sand_latent_827.mp4', 'sand_latent_800.mp4', 'sand_latent_839.mp4'];
+  // const videoSources2 = ['sand_latent_805.mp4', 'sand_latent_841.mp4', 'sand_latent_827.mp4', 'sand_latent_800.mp4', 'sand_latent_839.mp4',
+  // 'plasticine_latent_652.mp4', 'plasticine_latent_602.mp4', 'plasticine_latent_751.mp4', 'plasticine_latent_654.mp4', 'plasticine_latent_634.mp4'];
+  const videoSources2 = ['sand_latent_805.mp4', 'sand_latent_841.mp4', 'sand_latent_827.mp4', 'sand_latent_800.mp4', 'sand_latent_839.mp4',
+  'plasticine_latent_652_brown.mp4', 'plasticine_latent_602_brown.mp4', 'plasticine_latent_751_brown.mp4', 'plasticine_latent_654_brown.mp4', 'plasticine_latent_634_brown.mp4'];
+
+  range2.addEventListener('input', (e) => {
+    let rangeValue = e.target.value;
+    videoDisplay2.querySelector('source').src = videoSources2[rangeValue]; // Update the video source
+    videoDisplay2.load();
+  });
+
+  const range3 = document.getElementById('interpolation-slider3');
+  const videoDisplay3 = document.getElementById('interpolation-video3');
+  // const videoSources3 = ['plasticine_latent_652_2.mp4', 'plasticine_latent_602_2.mp4', 'plasticine_latent_751_2.mp4', 'plasticine_latent_654_2.mp4', 'plasticine_latent_634_2.mp4',
+  //         'non_newtonian_latent_405.mp4', 'non_newtonian_latent_434.mp4','non_newtonian_latent_438.mp4', 'non_newtonian_latent_450.mp4',  'non_newtonian_latent_486.mp4'];
+  // const videoSources3 = ['plasticine_latent_652_2.mp4', 'plasticine_latent_602_2.mp4', 'plasticine_latent_751_2.mp4', 'plasticine_latent_654_2.mp4', 'plasticine_latent_634_2.mp4',
+  //         'plasticine_latent_652_2.mp4', 'plasticine_latent_602_2.mp4', 'plasticine_latent_751_2.mp4', 'plasticine_latent_654_2.mp4', 'plasticine_latent_634_2.mp4'];
+  const videoSources3 = ['plasticine_latent_634_2.mp4', 'plasticine_latent_654_2.mp4', 'plasticine_latent_751_2.mp4', 'plasticine_latent_602_2.mp4', 'plasticine_latent_652_2.mp4',
+          'non_newtonian_knurling_1.mp4', 'non_newtonian_knurling_3.mp4', 'non_newtonian_knurling_2.mp4', 'non_newtonian_knurling_4.mp4', 'non_newtonian_knurling_5.mp4'];
+
+  range3.addEventListener('input', (e) => {
+    let rangeValue = e.target.value;
+    videoDisplay3.querySelector('source').src = videoSources3[rangeValue]; // Update the video source
+    videoDisplay3.load();
+  });
+
+  const range4 = document.getElementById('interpolation-slider4');
+  const videoDisplay4 = document.getElementById('interpolation-video4');
+  // const videoSources4 = ['newtonian_latent_227_2.mp4', 'newtonian_latent_247_2.mp4', 'newtonian_latent_201_2.mp4', 'newtonian_latent_265_2.mp4', 'newtonian_latent_349_2.mp4',
+  //         'non_newtonian_latent_405.mp4', 'non_newtonian_latent_434.mp4','non_newtonian_latent_438.mp4', 'non_newtonian_latent_450.mp4',  'non_newtonian_latent_486.mp4'];
+  const videoSources4 = ['newtonian_latent_349_2.mp4', 'newtonian_latent_265_2.mp4', 'newtonian_latent_201_2.mp4', 'newtonian_latent_247_2.mp4', 'newtonian_latent_227_2.mp4',
+          'non_newtonian_1_water.mp4', 'non_newtonian_2_water.mp4','non_newtonian_3_water.mp4', 'non_newtonian_4_water.mp4',  'non_newtonian_5_water.mp4'];
+
+  range4.addEventListener('input', (e) => {
+    let rangeValue = e.target.value;
+    videoDisplay4.querySelector('source').src = videoSources4[rangeValue]; // Update the video source
+    videoDisplay4.load();
+  });
+
+</script>
+
+<!-- <div class="columns is-centered has-text-centered">
+	<h2 style="padding: 10px; display: inline-block;" class="title is-3">Reconstruction</h2>
+</div>
+<section class="section">
+  	<div class="container is-widescreen">
+    <div class="columns is-centered">
+
+      <div class="column">
+        <div class="content" align="center">
+          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/jelly_reconstruct.mp4" type="video/mp4">
+          </video>
+        </div>
+        <h2 class="title is-5" align="center">Elastic</h2>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content" align="center">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/sand_reconstruction.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <h2 class="title is-5" align="center">Sand</h2>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content" align="center">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/plasticine_reconstruct.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <h2 class="title is-5" align="center">Plasticine</h2>
+      </div>
+
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content" align="center">
+            <video id="matting-video" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/water_reconstruct.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <h2 class="title is-5" align="center">Newtonian</h2>
+      </div>
+
+    </div>
+    <h6 style="text-align: center;"> We show the visualizations of reconstruction of the motion sequence on different materials.</h6>
+    <h6 style="text-align: center;"> Click <a href="index_reconstruction.html" style="text-decoration: underline;">here</a> to see comparison with NCLaw </h6>
+    </div>
+</section> -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code></code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
